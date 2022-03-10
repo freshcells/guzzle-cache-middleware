@@ -13,23 +13,26 @@ namespace Csa\Tests\GuzzleHttp\Middleware\Cache\Adapter;
 
 use Csa\GuzzleHttp\Middleware\Cache\Adapter\DoctrineAdapter;
 use Csa\GuzzleHttp\Middleware\Cache\NamingStrategy\NamingStrategyInterface;
+use Doctrine\Common\Cache\Cache;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
-class DoctrineAdapterTest extends \PHPUnit_Framework_TestCase
+class DoctrineAdapterTest extends TestCase
 {
     protected $class = DoctrineAdapter::class;
 
     public function testConstructor()
     {
-        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
-        new $this->class($cache, 0);
+        $cache = $this->createMock(Cache::class);
+        $adapter = new $this->class($cache, 0);
+        $this->assertInstanceOf($this->class, $adapter);
     }
 
     public function testFetch()
     {
-        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
+        $cache = $this->createMock(Cache::class);
 
         $cache
             ->expects($this->at(0))
@@ -62,7 +65,7 @@ class DoctrineAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testSave()
     {
-        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
+        $cache = $this->createMock(Cache::class);
 
         $cache
             ->expects($this->at(0))
@@ -84,8 +87,8 @@ class DoctrineAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchWithInjectedNamingStrategy()
     {
-        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
-        $namingStrategy = $this->getMock(NamingStrategyInterface::class);
+        $cache = $this->createMock(Cache::class);
+        $namingStrategy = $this->createMock(NamingStrategyInterface::class);
         $request = $this->getRequestMock();
         $adapter = new $this->class($cache, 0, $namingStrategy);
 
@@ -96,8 +99,8 @@ class DoctrineAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testSaveWithInjectedNamingStrategy()
     {
-        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
-        $namingStrategy = $this->getMock(NamingStrategyInterface::class);
+        $cache = $this->createMock(Cache::class);
+        $namingStrategy = $this->createMock(NamingStrategyInterface::class);
         $request = $this->getRequestMock();
         $response = $this->getResponseMock();
         $adapter = new $this->class($cache, 0, $namingStrategy);

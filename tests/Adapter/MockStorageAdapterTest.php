@@ -15,22 +15,15 @@ use Csa\GuzzleHttp\Middleware\Cache\Adapter\MockStorageAdapter;
 use Csa\GuzzleHttp\Middleware\Cache\NamingStrategy\NamingStrategyInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class MockStorageAdapterTest extends \PHPUnit_Framework_TestCase
+class MockStorageAdapterTest extends TestCase
 {
-    /**
-     * @var Filesystem
-     */
-    private $fs;
-
-    /**
-     * @var string
-     */
-    private $tmpDir;
-
-    protected $class = MockStorageAdapter::class;
+    private Filesystem $fs;
+    private string $tmpDir;
+    protected string $class = MockStorageAdapter::class;
 
     protected function setUp()
     {
@@ -99,7 +92,7 @@ class MockStorageAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchWithInjectedNamingStrategy()
     {
-        $namingStrategy = $this->getMock(NamingStrategyInterface::class);
+        $namingStrategy = $this->createMock(NamingStrategyInterface::class);
         $request = $this->getRequestMock();
         $adapter = new $this->class($this->tmpDir, [], [], $namingStrategy);
 
@@ -110,7 +103,7 @@ class MockStorageAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testSaveWithInjectedNamingStrategy()
     {
-        $namingStrategy = $this->getMock(NamingStrategyInterface::class);
+        $namingStrategy = $this->createMock(NamingStrategyInterface::class);
         $request = $this->getRequestMock();
         $adapter = new $this->class($this->tmpDir, [], [], $namingStrategy);
 

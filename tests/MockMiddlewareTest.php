@@ -17,9 +17,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 
-class MockMiddlewareTest extends \PHPUnit_Framework_TestCase
+class MockMiddlewareTest extends TestCase
 {
     public function testRecord()
     {
@@ -27,7 +28,7 @@ class MockMiddlewareTest extends \PHPUnit_Framework_TestCase
         $mock = new MockHandler([$response]);
         $handler = HandlerStack::create($mock);
 
-        $adapter = $this->getMock(StorageAdapterInterface::class);
+        $adapter = $this->createMock(StorageAdapterInterface::class);
         $adapter
             ->expects($this->once())
             ->method('save')
@@ -50,7 +51,7 @@ class MockMiddlewareTest extends \PHPUnit_Framework_TestCase
         $mock = new MockHandler([$response]);
         $handler = HandlerStack::create($mock);
 
-        $adapter = $this->getMock(StorageAdapterInterface::class);
+        $adapter = $this->createMock(StorageAdapterInterface::class);
         $adapter
             ->expects($this->once())
             ->method('fetch')
@@ -73,7 +74,7 @@ class MockMiddlewareTest extends \PHPUnit_Framework_TestCase
     {
         $handler = HandlerStack::create();
 
-        $adapter = $this->getMock(StorageAdapterInterface::class);
+        $adapter = $this->createMock(StorageAdapterInterface::class);
         $adapter
             ->expects($this->once())
             ->method('fetch')

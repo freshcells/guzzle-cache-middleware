@@ -15,22 +15,24 @@ use Csa\GuzzleHttp\Middleware\Cache\Adapter\PsrAdapter;
 use Csa\GuzzleHttp\Middleware\Cache\NamingStrategy\NamingStrategyInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class PsrAdapterTest extends \PHPUnit_Framework_TestCase
+class PsrAdapterTest extends TestCase
 {
     public function testConstructor()
     {
-        $cache = $this->getMock(CacheItemPoolInterface::class);
-        new PsrAdapter($cache, 0);
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $adapter = new PsrAdapter($cache, 0);
+        $this->assertInstanceOf(PsrAdapter::class, $adapter);
     }
 
     public function testFetch()
     {
-        $cache = $this->getMock(CacheItemPoolInterface::class);
-        $item = $this->getMock(CacheItemInterface::class);
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $item = $this->createMock(CacheItemInterface::class);
 
         $item
             ->expects($this->at(0))
@@ -68,8 +70,8 @@ class PsrAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testSave()
     {
-        $cache = $this->getMock(CacheItemPoolInterface::class);
-        $item = $this->getMock(CacheItemInterface::class);
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $item = $this->createMock(CacheItemInterface::class);
 
         $item
             ->expects($this->at(0))
@@ -104,7 +106,7 @@ class PsrAdapterTest extends \PHPUnit_Framework_TestCase
     public function testFetchWithInjectedNamingStrategy()
     {
         $cache = $this->getCacheMock();
-        $namingStrategy = $this->getMock(NamingStrategyInterface::class);
+        $namingStrategy = $this->createMock(NamingStrategyInterface::class);
         $request = $this->getRequestMock();
         $adapter = new PsrAdapter($cache, 0, $namingStrategy);
 
@@ -116,7 +118,7 @@ class PsrAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSaveWithInjectedNamingStrategy()
     {
         $cache = $this->getCacheMock();
-        $namingStrategy = $this->getMock(NamingStrategyInterface::class);
+        $namingStrategy = $this->createMock(NamingStrategyInterface::class);
         $request = $this->getRequestMock();
         $response = $this->getResponseMock();
         $adapter = new PsrAdapter($cache, 0, $namingStrategy);
@@ -138,8 +140,8 @@ class PsrAdapterTest extends \PHPUnit_Framework_TestCase
 
     private function getCacheMock()
     {
-        $item = $this->getMock(CacheItemInterface::class);
-        $cache = $this->getMock(CacheItemPoolInterface::class);
+        $item = $this->createMock(CacheItemInterface::class);
+        $cache = $this->createMock(CacheItemPoolInterface::class);
         $cache->method('getItem')->willReturn($item);
 
         return $cache;
