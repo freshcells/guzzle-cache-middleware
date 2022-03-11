@@ -16,6 +16,7 @@ use Csa\GuzzleHttp\Middleware\Cache\MockMiddleware;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Promise\RejectionException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -66,12 +67,9 @@ class MockMiddlewareTest extends TestCase
         $client->get('http://foo.bar');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Record not found for request: GET http://foo.bar
-     */
     public function testReplayFailsWithoutMock()
     {
+        $this->expectException(RejectionException::class);
         $handler = HandlerStack::create();
 
         $adapter = $this->createMock(StorageAdapterInterface::class);

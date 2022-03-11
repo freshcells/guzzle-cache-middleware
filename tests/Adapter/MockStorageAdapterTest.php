@@ -25,7 +25,7 @@ class MockStorageAdapterTest extends TestCase
     private string $tmpDir;
     protected string $class = MockStorageAdapter::class;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fs = new Filesystem();
 
@@ -33,7 +33,7 @@ class MockStorageAdapterTest extends TestCase
         $this->fs->mkdir($this->tmpDir);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->fs->remove($this->tmpDir);
     }
