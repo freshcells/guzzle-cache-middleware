@@ -39,4 +39,4 @@ jobs:
             - name: PHPUnit
               run: |
                   composer install -n --prefer-dist
-                  php vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+                  SYMFONY_DEPRECATIONS_HELPER=weak php vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
