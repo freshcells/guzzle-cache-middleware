@@ -37,8 +37,12 @@ class MockStorageAdapter implements StorageAdapterInterface
      * @param array $responseHeadersBlacklist
      * @param NamingStrategyInterface|null $namingStrategy
      */
-    public function __construct($storagePath, array $requestHeadersBlacklist = [], array $responseHeadersBlacklist = [], NamingStrategyInterface $namingStrategy = null)
-    {
+    public function __construct(
+        $storagePath,
+        array $requestHeadersBlacklist = [],
+        array $responseHeadersBlacklist = [],
+        NamingStrategyInterface $namingStrategy = null
+    ) {
         $this->storagePath = $storagePath;
 
         if ($namingStrategy) {

@@ -4,3 +4,4 @@
 /coverage
 /bower_components
 /.sass-cache
+composer.lock

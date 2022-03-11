@@ -21,7 +21,8 @@
         "phpunit/phpunit": "^6",
         "doctrine/cache": "^1.1",
         "psr/cache": "^1.0",
-        "symfony/phpunit-bridge": "^2.7|^3.0|^4.0|^5.0"
+        "symfony/phpunit-bridge": "^2.7|^3.0|^4.0|^5.0",
+        "squizlabs/php_codesniffer": "^3.6"
     },
     "autoload": {
         "psr-4": { "Csa\\GuzzleHttp\\Middleware\\Cache\\": "src" }
@@ -31,6 +32,11 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src",
+        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
