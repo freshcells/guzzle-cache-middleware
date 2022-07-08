@@ -2,6 +2,8 @@
 
 namespace Csa\GuzzleHttp\Middleware\Cache\NamingStrategy;
 
+use Psr\Http\Message\RequestInterface;
+
 class ChainedNamingStrategy implements NamingStrategyInterface
 {
     private array $strategies;
@@ -16,5 +18,14 @@ class ChainedNamingStrategy implements NamingStrategyInterface
         })(...$strategies);
     }
 
+    public function filename(RequestInterface $request)
+    {
+        foreach ($this->strategies as $strategy) {
+            if ($filename = $strategy->filename($request)) {
+                return $filename;
+            }
+        }
 
+        return null;
+    }
 }

@@ -4,3 +4,5 @@
 /coverage
 /bower_components
 /.sass-cache
+composer.lock
+.phpunit.result.cache
