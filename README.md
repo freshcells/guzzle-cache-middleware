@@ -1,20 +1,14 @@
 Guzzle Cache Middleware
 =======================
 
+Forked from https://github.com/csarrazi/guzzle-cache-middleware
+
 Installation
 ------------
 
 ```
-composer req csa/guzzle-cache-middleware
+composer req freshcells/guzzle-cache-middleware
 ```
-
-Upgrade
--------
-
-Although I try to guarantee forward-compatibility of the bundle with previous versions.
-Here are the upgrade notes between each version.
-
-See [Upgrade.md](UPGRADE.md).
 
 Documentation
 -------------
@@ -28,7 +22,4 @@ the [Contributing Guidelines](CONTRIBUTING.md).
 License
 -------
 
-This library is under Apache License 2.0. For the full copyright and license
-information, please view the [LICENSE](src/Resources/meta/LICENSE) file that was
-distributed with this source code.
-
+This library is under Apache License 2.0.

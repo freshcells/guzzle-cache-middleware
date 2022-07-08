@@ -66,12 +66,11 @@ class MockMiddlewareTest extends TestCase
         $client->get('http://foo.bar');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Record not found for request: GET http://foo.bar
-     */
     public function testReplayFailsWithoutMock()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Record not found for request: GET http://foo.bar');
+
         $handler = HandlerStack::create();
 
         $adapter = $this->createMock(StorageAdapterInterface::class);

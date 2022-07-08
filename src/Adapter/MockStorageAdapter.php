@@ -37,8 +37,12 @@ class MockStorageAdapter implements StorageAdapterInterface
      * @param array $responseHeadersBlacklist
      * @param NamingStrategyInterface|null $namingStrategy
      */
-    public function __construct($storagePath, array $requestHeadersBlacklist = [], array $responseHeadersBlacklist = [], NamingStrategyInterface $namingStrategy = null)
-    {
+    public function __construct(
+        $storagePath,
+        array $requestHeadersBlacklist = [],
+        array $responseHeadersBlacklist = [],
+        NamingStrategyInterface $namingStrategy = null
+    ) {
         $this->storagePath = $storagePath;
 
         if ($namingStrategy) {
@@ -59,7 +63,12 @@ class MockStorageAdapter implements StorageAdapterInterface
     {
         foreach ($this->namingStrategies as $strategy) {
             if (file_exists($filename = $this->getFilename($strategy->filename($request)))) {
-                return Psr7\parse_response(file_get_contents($filename));
+                // Guzzle 6 compatibility
+                if (method_exists(Psr7::class, 'parse_response')) {
+                    return Psr7\parse_response(file_get_contents($filename));
+                }
+
+                return Psr7\Message::parseResponse(file_get_contents($filename));
             }
         }
     }
@@ -80,7 +89,13 @@ class MockStorageAdapter implements StorageAdapterInterface
         $fs = new Filesystem();
         $fs->mkdir(dirname($filename));
 
-        file_put_contents($filename, Psr7\str($response));
+        // guzzle 6 compatibility
+        if (method_exists(Psr7::class, 'str')) {
+            file_put_contents($filename, Psr7\str($response));
+        } else {
+            file_put_contents($filename, Psr7\Message::toString($response));
+        }
+
         $response->getBody()->rewind();
     }
 
@@ -93,6 +108,6 @@ class MockStorageAdapter implements StorageAdapterInterface
      */
     private function getFilename($name)
     {
-        return $this->storagePath.'/'.$name.'.txt';
+        return $this->storagePath . '/' . $name . '.txt';
     }
 }

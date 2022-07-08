@@ -1,0 +1,65 @@
+name: freshcells-guzzle-cache-middleware
+
+on:
+    pull_request: ~
+    push:
+        branches:
+            - main
+
+jobs:
+    coding-style:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '7.4'
+            - name: php-cs-fixer
+              run: |
+                  composer install -n --prefer-dist
+                  composer check-style
+    tests-php-7-4-guzzle-6-0:
+        runs-on: ubuntu-latest
+        env:
+            GUZZLE_VERSION: 6.8.*
+        steps:
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '7.4'
+            - name: PHPUnit
+              run: |
+                  composer require --no-update guzzlehttp/guzzle=$GUZZLE_VERSION
+                  composer update --prefer-dist --no-interaction --no-ansi --no-progress
+                  php vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+    tests-php-8-1-guzzle-6-0:
+        runs-on: ubuntu-latest
+        env:
+            GUZZLE_VERSION: 6.8.*
+        steps:
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1'
+            - name: PHPUnit
+              run: |
+                  composer require --no-update guzzlehttp/guzzle=$GUZZLE_VERSION
+                  composer update --prefer-dist --no-interaction --no-ansi --no-progress
+                  composer check-style
+                  SYMFONY_DEPRECATIONS_HELPER=weak php vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+
+    tests-php-8-1-guzzle-7-0:
+        runs-on: ubuntu-latest
+        env:
+            GUZZLE_VERSION: 7.*.*
+        steps:
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1'
+            - name: PHPUnit
+              run: |
+                  composer require --no-update guzzlehttp/guzzle=$GUZZLE_VERSION
+                  composer update --prefer-dist --no-interaction --no-ansi --no-progress
+                  composer check-style
+                  SYMFONY_DEPRECATIONS_HELPER=weak php vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover

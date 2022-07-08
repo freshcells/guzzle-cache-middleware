@@ -25,15 +25,15 @@ class MockStorageAdapterTest extends TestCase
     private string $tmpDir;
     protected string $class = MockStorageAdapter::class;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fs = new Filesystem();
 
-        $this->tmpDir = sys_get_temp_dir().'/csa_guzzle_bundle_'.uniqid();
+        $this->tmpDir = sys_get_temp_dir() . '/csa_guzzle_bundle_' . uniqid();
         $this->fs->mkdir($this->tmpDir);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->fs->remove($this->tmpDir);
     }
@@ -43,7 +43,7 @@ class MockStorageAdapterTest extends TestCase
         /* Mock with host in the file name look for the file with hostname first */
 
         $mockStorage = new $this->class(__DIR__ . '/../Fixtures/mocks');
-        $response = $mockStorage->fetch($this->getRequestMock());
+        $response    = $mockStorage->fetch($this->getRequestMock());
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
         $this->assertEquals(302, $response->getStatusCode());
@@ -51,7 +51,7 @@ class MockStorageAdapterTest extends TestCase
         /* Mock with no host in the file name gets the right return code */
 
         $mockStorage = new $this->class(__DIR__ . '/../Fixtures/mocks');
-        $response = $mockStorage->fetch($this->getRequestMockForMockWithNoHost());
+        $response    = $mockStorage->fetch($this->getRequestMockForMockWithNoHost());
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
         $this->assertEquals(301, $response->getStatusCode());
@@ -59,12 +59,12 @@ class MockStorageAdapterTest extends TestCase
 
     public function testSave()
     {
-        $request = $this->getRequestMock();
+        $request     = $this->getRequestMock();
         $mockStorage = new $this->class($this->tmpDir, [], ['X-Foo']);
         $mockStorage->save($request, new Response(404, ['X-Foo' => 'bar'], 'Not found'));
         $response = $mockStorage->fetch($request);
 
-        $this->assertCount(1, glob($this->tmpDir.'/google.com/GET_*'));
+        $this->assertCount(1, glob($this->tmpDir . '/google.com/GET_*'));
         $this->assertInstanceOf(ResponseInterface::class, $response);
         $this->assertEquals(404, $response->getStatusCode());
 
@@ -83,7 +83,7 @@ class MockStorageAdapterTest extends TestCase
         $mockStorage->save($request, new Response(404, ['X-Foo' => 'bar'], 'Not found'));
         $response = $mockStorage->fetch($request);
 
-        $this->assertCount(1, glob($this->tmpDir.'/api.github.com/user/repos/POST_*'));
+        $this->assertCount(1, glob($this->tmpDir . '/api.github.com/user/repos/POST_*'));
         $this->assertInstanceOf(ResponseInterface::class, $response);
         $this->assertEquals(404, $response->getStatusCode());
 
@@ -93,8 +93,8 @@ class MockStorageAdapterTest extends TestCase
     public function testFetchWithInjectedNamingStrategy()
     {
         $namingStrategy = $this->createMock(NamingStrategyInterface::class);
-        $request = $this->getRequestMock();
-        $adapter = new $this->class($this->tmpDir, [], [], $namingStrategy);
+        $request        = $this->getRequestMock();
+        $adapter        = new $this->class($this->tmpDir, [], [], $namingStrategy);
 
         $namingStrategy->expects($this->once())->method('filename')->with($request);
 
@@ -104,8 +104,8 @@ class MockStorageAdapterTest extends TestCase
     public function testSaveWithInjectedNamingStrategy()
     {
         $namingStrategy = $this->createMock(NamingStrategyInterface::class);
-        $request = $this->getRequestMock();
-        $adapter = new $this->class($this->tmpDir, [], [], $namingStrategy);
+        $request        = $this->getRequestMock();
+        $adapter        = new $this->class($this->tmpDir, [], [], $namingStrategy);
 
         $namingStrategy->expects($this->once())->method('filename')->with($request);
 
