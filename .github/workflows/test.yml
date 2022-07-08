@@ -21,7 +21,7 @@ jobs:
     tests-php-7-4-guzzle-6-0:
         runs-on: ubuntu-latest
         env:
-            GUZZLE_VERSION: 6.8.*
+            GUZZLE_VERSION: 6.5.*
         steps:
             - uses: actions/checkout@v2
             - uses: shivammathur/setup-php@v2
@@ -35,7 +35,7 @@ jobs:
     tests-php-8-1-guzzle-6-0:
         runs-on: ubuntu-latest
         env:
-            GUZZLE_VERSION: 6.8.*
+            GUZZLE_VERSION: 6.5.*
         steps:
             - uses: actions/checkout@v2
             - uses: shivammathur/setup-php@v2
