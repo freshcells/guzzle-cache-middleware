@@ -1,7 +1,9 @@
 Guzzle Cache Middleware
 =======================
 
-Forked from https://github.com/csarrazi/guzzle-cache-middleware
+This is a takeover drop-in fork of https://github.com/csarrazi/guzzle-cache-middleware which seems to be abandoned.  
+We left the namespace as `Csa` to assure drop-in replacement.
+
 
 Installation
 ------------
